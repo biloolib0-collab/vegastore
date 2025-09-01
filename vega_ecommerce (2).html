@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vega - المتجر الإلكتروني</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a0f2e 50%, #0f0f1a 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        /* Neon animations */
+        @keyframes neonGlow {
+            0%, 100% { text-shadow: 0 0 5px #8b5cf6, 0 0 10px #8b5cf6, 0 0 15px #8b5cf6; }
+            50% { text-shadow: 0 0 10px #a855f7, 0 0 20px #a855f7, 0 0 30px #a855f7; }
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(15, 15, 26, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid #8b5cf6;
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #8b5cf6;
+            animation: neonGlow 2s ease-in-out infinite;
+            cursor: pointer;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .nav-links a:hover {
+            color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #8b5cf6, #a855f7);
+            color: white;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(139, 92, 246, 0.5);
+            animation: pulse 0.6s ease-in-out;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #8b5cf6;
+            border: 2px solid #8b5cf6;
+        }
+        
+        .btn-secondary:hover {
+            background: #8b5cf6;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* Main content */
+        .main-content {
+            margin-top: 80px;
+            padding: 2rem;
+        }
+        
+        /* Hero section */
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: radial-gradient(circle at center, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #8b5cf6, #a855f7, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: neonGlow 3s ease-in-out infinite;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+        
+        /* Product categories */
+        .categories {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #8b5cf6;
+            animation: neonGlow 2s ease-in-out infinite;
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .category-card {
+            background: rgba(15, 15, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .category-card:hover::before {
+            left: 100%;
+        }
+        
+        .category-card:hover {
+            border-color: #8b5cf6;
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+        }
+        
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #8b5cf6;
+        }
+        
+        /* Products */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .product-card {
+            background: rgba(15, 15, 26, 0.9);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .product-card:hover {
+            border-color: #8b5cf6;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #1a0f2e, #2d1b69);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: #8b5cf6;
+        }
+        
+        .product-info {
+            padding: 1.5rem;
+        }
+        
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+        
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #8b5cf6;
+            margin-bottom: 1rem;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1a0f2e 0%, #2d1b69 100%);
+            margin: 5% auto;
+            padding: 2rem;
+            border: 2px solid #8b5cf6;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            animation: fadeInUp 0.3s ease-out;
+        }
+        
+        .close {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 2rem;
+            color: #8b5cf6;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .close:hover {
+            color: #a855f7;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #8b5cf6;
+            font-weight: bold;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #8b5cf6;
+            border-radius: 10px;
+            background: rgba(15, 15, 26, 0.8);
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #a855f7;
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+        }
+        
+        /* Payment methods */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .payment-method {
+            padding: 1rem;
+            background: rgba(15, 15, 26, 0.8);
+            border: 2px solid #8b5cf6;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-method:hover {
+            background: rgba(139, 92, 246, 0.2);
+            transform: scale(1.05);
+        }
+        
+        .payment-method.selected {
+            background: rgba(139, 92, 246, 0.3);
+            border-color: #a855f7;
+        }
+        
+        /* Cart */
+        .cart {
+            position: fixed;
+            right: 2rem;
+            bottom: 2rem;
+            background: linear-gradient(45deg, #8b5cf6, #a855f7);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(139, 92, 246, 0.5);
+            transition: all 0.3s ease;
+            font-size: 1.5rem;
+        }
+        
+        .cart:hover {
+            transform: scale(1.1);
+            animation: pulse 0.6s ease-in-out;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4444;
+            color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        /* Hidden class */
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .category-grid, .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo" onclick="showSection('home')">⭐ VEGA</div>
+            <ul class="nav-links">
+                <li><a onclick="showSection('home')">الرئيسية</a></li>
+                <li><a onclick="showSection('products')">المنتجات</a></li>
+                <li><a onclick="showSection('categories')">الفئات</a></li>
+                <li><a onclick="showSection('contact')">اتصل بنا</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <button class="btn btn-secondary" onclick="showLogin()">تسجيل الدخول</button>
+                <button class="btn btn-primary" onclick="showRegister()">إنشاء حساب</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Home Section -->
+        <section id="home-section">
+            <div class="hero">
+                <h1>مرحباً بك في فيجا</h1>
+                <p>اكتشف أفضل المنتجات بأسعار لا تُقاوم</p>
+                <button class="btn btn-primary" onclick="showSection('products')">تسوق الآن</button>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section id="categories-section" class="categories">
+            <h2 class="section-title">فئات المنتجات</h2>
+            <div class="category-grid">
+                <div class="category-card" onclick="showCategoryProducts('electronics')">
+                    <div class="category-icon">📱</div>
+                    <h3>الإلكترونيات</h3>
+                    <p>أحدث الأجهزة والتقنيات</p>
+                </div>
+                <div class="category-card" onclick="showCategoryProducts('fashion')">
+                    <div class="category-icon">👕</div>
+                    <h3>الأزياء</h3>
+                    <p>ملابس عصرية وأنيقة</p>
+                </div>
+                <div class="category-card" onclick="showCategoryProducts('home')">
+                    <div class="category-icon">🏠</div>
+                    <h3>المنزل والحديقة</h3>
+                    <p>كل ما تحتاجه للمنزل</p>
+                </div>
+                <div class="category-card" onclick="showCategoryProducts('books')">
+                    <div class="category-icon">📚</div>
+                    <h3>الكتب</h3>
+                    <p>مكتبة متنوعة من الكتب</p>
+                </div>
+                <div class="category-card" onclick="showCategoryProducts('gaming')">
+                    <div class="category-icon">🎮</div>
+                    <h3>الألعاب والتسلية</h3>
+                    <p>أجهزة وإكسسوارات الألعاب</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section id="products-section" class="categories hidden">
+            <h2 class="section-title">المنتجات</h2>
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <button class="btn btn-secondary" onclick="loadProducts()">جميع المنتجات</button>
+                <button class="btn btn-secondary" onclick="loadProducts('electronics')">الإلكترونيات</button>
+                <button class="btn btn-secondary" onclick="loadProducts('fashion')">الأزياء</button>
+                <button class="btn btn-secondary" onclick="loadProducts('home')">المنزل</button>
+                <button class="btn btn-secondary" onclick="loadProducts('books')">الكتب</button>
+                <button class="btn btn-secondary" onclick="loadProducts('gaming')">الألعاب</button>
+            </div>
+            <div class="products-grid" id="products-container">
+                <!-- Products will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact-section" class="categories hidden">
+            <h2 class="section-title">اتصل بنا</h2>
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div style="background: rgba(15, 15, 26, 0.9); border-radius: 15px; padding: 2rem; border: 2px solid #8b5cf6;">
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">📧</div>
+                        <h3 style="color: #8b5cf6; margin-bottom: 1rem;">تواصل معنا</h3>
+                        <p style="margin-bottom: 2rem;">نحن هنا لمساعدتك! تواصل معنا عبر البريد الإلكتروني أو املأ النموذج أدناه</p>
+                        <div style="background: rgba(139, 92, 246, 0.1); padding: 1rem; border-radius: 10px; margin-bottom: 2rem;">
+                            <strong style="color: #8b5cf6; font-size: 1.2rem;">bellogamer722@gmail.com</strong>
+                        </div>
+                    </div>
+                    
+                    <form onsubmit="sendMessage(event)">
+                        <div class="form-group">
+                            <label>الاسم الكامل</label>
+                            <input type="text" id="contactName" placeholder="أدخل اسمك الكامل" required>
+                        </div>
+                        <div class="form-group">
+                            <label>البريد الإلكتروني</label>
+                            <input type="email" id="contactEmail" placeholder="أدخل بريدك الإلكتروني" required>
+                        </div>
+                        <div class="form-group">
+                            <label>الموضوع</label>
+                            <select id="contactSubject" required>
+                                <option value="">اختر الموضوع</option>
+                                <option value="order">استفسار عن طلب</option>
+                                <option value="product">استفسار عن منتج</option>
+                                <option value="support">الدعم الفني</option>
+                                <option value="complaint">شكوى</option>
+                                <option value="suggestion">اقتراح</option>
+                                <option value="other">أخرى</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>الرسالة</label>
+                            <textarea id="contactMessage" rows="5" style="width: 100%; padding: 1rem; border: 2px solid #8b5cf6; border-radius: 10px; background: rgba(15, 15, 26, 0.8); color: white; font-size: 1rem; resize: vertical;" placeholder="اكتب رسالتك هنا..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">إرسال الرسالة</button>
+                    </form>
+                    
+                    <div style="margin-top: 2rem; text-align: center; padding-top: 2rem; border-top: 1px solid #8b5cf6;">
+                        <p style="color: #8b5cf6; margin-bottom: 1rem;">أو تواصل معنا مباشرة:</p>
+                        <a href="mailto:bellogamer722@gmail.com" class="btn btn-secondary" style="margin: 0.5rem;">إرسال إيميل مباشر</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Shopping Cart -->
+    <div class="cart" onclick="showCart()">
+        🛒
+        <div class="cart-count" id="cart-count">0</div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2 style="color: #8b5cf6; margin-bottom: 2rem; text-align: center;">تسجيل الدخول</h2>
+            
+            <div style="margin-bottom: 1rem;">
+                <label style="color: #8b5cf6;">نوع المستخدم:</label><br>
+                <label style="margin-right: 1rem;"><input type="radio" name="userType" value="user" checked> مستخدم</label>
+                <label style="margin-right: 1rem;"><input type="radio" name="userType" value="admin"> أدمن</label>
+                <label><input type="radio" name="userType" value="owner"> مالك</label>
+            </div>
+            
+            <div class="form-group">
+                <label>البريد الإلكتروني</label>
+                <input type="email" id="loginEmail" placeholder="أدخل بريدك الإلكتروني">
+            </div>
+            <div class="form-group">
+                <label>كلمة المرور</label>
+                <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور">
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="login()">تسجيل الدخول</button>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('registerModal')">&times;</span>
+            <h2 style="color: #8b5cf6; margin-bottom: 2rem; text-align: center;">إنشاء حساب جديد</h2>
+            
+            <div class="form-group">
+                <label>الاسم الكامل</label>
+                <input type="text" id="registerName" placeholder="أدخل اسمك الكامل">
+            </div>
+            <div class="form-group">
+                <label>البريد الإلكتروني</label>
+                <input type="email" id="registerEmail" placeholder="أدخل بريدك الإلكتروني">
+            </div>
+            <div class="form-group">
+                <label>كلمة المرور</label>
+                <input type="password" id="registerPassword" placeholder="أدخل كلمة المرور">
+            </div>
+            <div class="form-group">
+                <label>تأكيد كلمة المرور</label>
+                <input type="password" id="confirmPassword" placeholder="أعد إدخال كلمة المرور">
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="register()">إنشاء الحساب</button>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('checkoutModal')">&times;</span>
+            <h2 style="color: #8b5cf6; margin-bottom: 2rem; text-align: center;">إتمام الطلب</h2>
+            
+            <div class="form-group">
+                <label>العنوان</label>
+                <input type="text" id="shippingAddress" placeholder="أدخل عنوان التسليم">
+            </div>
+            
+            <div class="form-group">
+                <label>طريقة الدفع</label>
+                <div class="payment-methods">
+                    <div class="payment-method" onclick="selectPayment('visa')">
+                        💳<br>فيزا
+                    </div>
+                    <div class="payment-method" onclick="selectPayment('mastercard')">
+                        💳<br>ماستركارد
+                    </div>
+                    <div class="payment-method" onclick="selectPayment('paypal')">
+                        💰<br>باي بال
+                    </div>
+                    <div class="payment-method" onclick="selectPayment('cash')">
+                        💵<br>الدفع عند التسليم
+                    </div>
+                </div>
+            </div>
+            
+            <div id="cart-summary" style="margin: 2rem 0; padding: 1rem; background: rgba(15, 15, 26, 0.5); border-radius: 10px;">
+                <!-- Cart summary will be displayed here -->
+            </div>
+            
+            <button class="btn btn-primary" style="width: 100%;" onclick="completeOrder()">تأكيد الطلب</button>
+        </div>
+    </div>
+
+    <script>
+        // Real products data
+        const products = [
+            // Electronics
+            { id: 1, name: 'iPhone 15 Pro Max 256GB', price: 1199, category: 'electronics', icon: '📱' },
+            { id: 2, name: 'Samsung Galaxy S24 Ultra', price: 1299, category: 'electronics', icon: '📱' },
+            { id: 3, name: 'MacBook Air M3 13"', price: 1099, category: 'electronics', icon: '💻' },
+            { id: 4, name: 'AirPods Pro 2nd Gen', price: 249, category: 'electronics', icon: '🎧' },
+            { id: 5, name: 'iPad Pro 12.9" M2', price: 1099, category: 'electronics', icon: '📱' },
+            
+            // Fashion
+            { id: 6, name: 'Nike Air Jordan 1 High', price: 170, category: 'fashion', icon: '👟' },
+            { id: 7, name: 'Levi\'s 501 Original Jeans', price: 89, category: 'fashion', icon: '👖' },
+            { id: 8, name: 'Adidas Ultraboost 22', price: 190, category: 'fashion', icon: '👟' },
+            { id: 9, name: 'Ralph Lauren Polo Shirt', price: 85, category: 'fashion', icon: '👕' },
+            
+            // Home & Garden
+            { id: 10, name: 'Dyson V15 Detect Vacuum', price: 749, category: 'home', icon: '🧹' },
+            { id: 11, name: 'Instant Pot Duo 7-in-1', price: 99, category: 'home', icon: '🍲' },
+            { id: 12, name: 'Philips Hue Smart Bulbs 4-Pack', price: 199, category: 'home', icon: '💡' },
+            
+            // Books
+            { id: 13, name: 'The Psychology of Money', price: 18, category: 'books', icon: '📚' },
+            { id: 14, name: 'Atomic Habits', price: 16, category: 'books', icon: '📖' },
+            { id: 15, name: 'Clean Code', price: 42, category: 'books', icon: '📚' },
+            
+            // Gaming
+            { id: 16, name: 'PlayStation 5 Console', price: 499, category: 'gaming', icon: '🎮' },
+            { id: 17, name: 'Xbox Series X', price: 499, category: 'gaming', icon: '🎮' },
+            { id: 18, name: 'Nintendo Switch OLED', price: 349, category: 'gaming', icon: '🕹️' },
+            { id: 19, name: 'SteelSeries Arctis 7P Headset', price: 149, category: 'gaming', icon: '🎧' },
+            { id: 20, name: 'Razer DeathAdder V3 Gaming Mouse', price: 89, category: 'gaming', icon: '🖱️' },
+            { id: 21, name: 'Corsair K95 RGB Mechanical Keyboard', price: 199, category: 'gaming', icon: '⌨️' },
+            { id: 22, name: 'ASUS ROG Gaming Monitor 27"', price: 329, category: 'gaming', icon: '🖥️' },
+            { id: 23, name: 'Elgato Stream Deck', price: 149, category: 'gaming', icon: '🎬' }
+        ];
+        
+        let cart = [];
+        let currentUser = null;
+        let selectedPayment = null;
+        
+        
